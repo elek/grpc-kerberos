@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>grpc-kerberos-parent</artifactId>
+    <groupId>net.anzix.grpc.kerberos</groupId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+  <groupId>net.anzix.grpc.kerberos</groupId>
+  <artifactId>grpc-kerberos</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+
+  <dependencies>
+    <dependency>
+      <groupId>io.grpc</groupId>
+      <artifactId>grpc-core</artifactId>
+      <version>${grpc.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.grpc</groupId>
+      <artifactId>grpc-stub</artifactId>
+      <version>${grpc.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.grpc</groupId>
+      <artifactId>grpc-netty</artifactId>
+      <version>${grpc.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.grpc</groupId>
+      <artifactId>grpc-protobuf</artifactId>
+      <version>${grpc.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.google.protobuf</groupId>
+          <artifactId>protobuf-java</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.25</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.2.3</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java</artifactId>
+      <version>3.5.1</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+
+    <plugins>
+      <plugin>
+        <groupId>org.xolstice.maven.plugins</groupId>
+        <artifactId>protobuf-maven-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <protocArtifact>
+            com.google.protobuf:protoc:${protobuf-compile.version}:exe:${os.detected.classifier}
+          </protocArtifact>
+          <protoSourceRoot>${basedir}/src/main/proto/</protoSourceRoot>
+          <includes>
+            <include>kerberos.proto</include>
+          </includes>
+          <outputDirectory>target/generated-sources/java</outputDirectory>
+          <clearOutputDirectory>false</clearOutputDirectory>
+        </configuration>
+        <executions>
+          <execution>
+            <id>compile-protoc</id>
+            <goals>
+              <goal>compile</goal>
+              <goal>test-compile</goal>
+              <goal>compile-custom</goal>
+              <goal>test-compile-custom</goal>
+            </goals>
+            <configuration>
+              <pluginId>grpc-java</pluginId>
+              <pluginArtifact>
+                io.grpc:protoc-gen-grpc-java:${grpc.version}:exe:${os.detected.classifier}
+              </pluginArtifact>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
+</project>

@@ -1,0 +1,20 @@
+syntax = "proto3";
+option java_package = "net.anzix.grpc.kerberos";
+option java_outer_classname = "Negotiate";
+option java_generate_equals_and_hash = true;
+package net.anzix.grpc.kerberos.example;
+
+
+message NegotiationMessageRequest {
+    bytes challenge = 1;
+};
+
+message NegotiationMessageResponse {
+    bytes challenge = 1;
+    bool complete = 2;
+    bytes token = 3;
+};
+
+service NegotiationService {
+    rpc Negotiate (stream NegotiationMessageRequest) returns (stream NegotiationMessageResponse);
+}
